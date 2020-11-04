@@ -25,18 +25,12 @@ function get_data()
     echo json_encode($rows);
 }
 
-// get_data();
-
-// switch case depending on _GET
-// switch () {
-
-// }
-
-// this is currently very insecure!
+// add constraints for returning data
+// rework as switch
 if (function_exists($_GET['f'])) {
-    $_GET['f']();
-    // if($_GET['u'] == 123) {
-    // } else {
-    //     echo 'WRONG USER';
-    // }
+    if($_GET['u'] == '123') {
+        $_GET['f']();
+    } else {
+        echo 'WRONG USER';
+    }
 }
