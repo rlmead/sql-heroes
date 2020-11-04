@@ -20,7 +20,7 @@ axios call to custom php api
 
 **view**
 
-* login/create account (default)
+* component: login/create account (default)
     * input: username
     * button: log in
     * button: create account
@@ -30,7 +30,7 @@ axios call to custom php api
     * button: go to my profile page
     * button: go to user list
     * button: log out
-* profile page (argument: user)
+* profile page (arguments: string userName; bool isCurrentUser)
     * profile picture
         * if current user's profile: edit button
     * name
@@ -63,12 +63,15 @@ axios call to custom php api
 * function(s) to translate sql output to json
 
 **functions to run db queries (& arguments)**
-*heroes table*
+
+<!-- rework to account for all tables affected -->
+
 * select
     * get profile (name)
-    * get name, image, about-me for all users
+        * 
+    * get hero: name, image, about-me 
 * insert
-    * add user (name, about me, biography)
+    * add user (name, about me, biography, abilities)
 * update
     * change user image (url)
     * change user name (name)
@@ -76,12 +79,12 @@ axios call to custom php api
     * change user biography (text) 
 * delete
     * remove user (name)
+        * remove all relationships with this hero
 
-*relationships table*
 * select
-    * get relationship type (user1, user2)
+    * get relationship type (currentUser, *)
 * insert
-    * add new relationship (user1, user2)
+    * add new relationship (user1, user2, type)
 * update
     * change relationship type (user1, user2)
 * delete
