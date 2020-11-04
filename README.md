@@ -1,7 +1,7 @@
-# SQL Heroes
+# SQL Heroes Pseudocode
 Project for Awesome Inc Web Development Bootcamp Week 7
 
-## React Pseudocode
+## React
 **model**
 
 track in state:
@@ -11,81 +11,172 @@ track in state:
 **controller**
 
 axios call to custom php api
+input: db function, get/post, data/arguments
 * get
-    * see php db select functions below
+    * call db select functions defined below
+    * include necessary arguments
 * post
-    * see php db insert/update functions below
+    * call db update/insert(/delete?) functions defined below
+    * include necessary arguments
 
-...does there need to be a different function defined in react corresponding to each different query? or can a single react function take inputs to send php the name of the query it wants to run, and any arguments it needs?
-
-**view**
-
-* component: login/create account (default)
+**view**<br>
+components:
+* LOGIN/CREAT ACCOUNT (default)
     * input: username
     * button: log in
     * button: create account
         * input: about me
         * input: biography
-* footer (sticky; display on all pages except login)
-    * button: go to my profile page
-    * button: go to user list
+* FOOTER (sticky; display on all pages except login)
+    * button with profile picture: go to my profile page
+    * button: go to all heroes
     * button: log out
-* profile page (arguments: string userName; bool isCurrentUser)
+* PROFILE PAGE (arguments: string userName; bool isCurrentUser)
     * profile picture
-        * if current user's profile: edit button
+        * if current hero's profile: edit button
     * name
-        * if current user's profile: edit button
+        * if current hero's profile: edit button
     * about me
-        * if current user's profile: edit button
+        * if current hero's profile: edit button
     * biography
-        * if current user's profile: edit button
-    * relationships list (with links to user's profiles)
-        * friends: lavender outline
+        * if current hero's profile: edit button
+    * relationships list (with links to heroes' profiles)
+        * friends: lavender background
         * enemies: yellow background
     * button(s):
-        * if current user's profile: delete account
+        * if current hero's profile: delete account
         * else
-            * lavender "friend" button (disabled if user is already current user's friend)
-            * yellow "enemy" button (disabled if user is already current user's enemy)
-            * gray "i don't know this person" button (disabled if relationship to current user is currently undefined)
-* user list
-    * one list item for each user other than current user, ordered alphabetically by name
+            * lavender "friend" button (disabled if hero is already current hero's friend)
+            * yellow "enemy" button (disabled if hero is already current hero's enemy)
+            * gray "i don't know this person" button (disabled if relationship to current hero is undefined)
+* ALL HEROES
+    * one list item for each hero other than current hero, ordered alphabetically by name
         * image thumbnail, name, about-me, relationship status
-* error
+* ERROR
     * apologetic message
-        * detect common errors to change message wording (user doesn't exist, etc)
+        * detect common errors to change message wording (hero doesn't exist, etc)
     * button: return to login page
+
+### front-end/back-end interface
+* LOGIN/CREATE ACCOUNT
+    * button: login
+        * when clicked, run hero_exists
+        * if hero exists, load profile page
+    * button: create account
+        * when clicked, run hero_exists
+        * if hero doesn't exist, show about-me/biography/abilities input, and
+            * new-hero button: when clicked, run add_hero, then load profile page
+* FOOTER
+    * image
+        * when loaded, run get_hero_image
+            * if returned data is null, load a default picture
+        * when clicked, run get_profile (current hero)
+    * button: see all heroes
+        * when clicked, open all heroes page
+    * button: log out
+        * when clicked, load login page & set user state to null
+* PROFILE PAGE
+    * when loaded:
+        * run get_profile
+        * run get_hero_relationships
+    * if current hero's profile page:
+        * button to edit profile: run update_hero
+        * button to delete profile: run delete_hero
+    * else:
+        * button to add friend: run hero_has_relationship
+            * if false, run add_relationship
+            * if true, run update_relationship
+        * button to add enemy: run hero_has_relationship
+            * if false, run add_relationship
+            * if true, run update_relationship
+        * button "i don't know this person": run delete_relationship
+* ALL HEROES
+    * when loaded, run get_all_heroes
 
 ### PHP/SQL Pseudocode
 **db connection**
 
-**data wrangling**
-* function(s) to translate sql output to json
+**input wrangling**
+use superglobals to:
+* determine which function to run
+* ensure that user has the correct permissions to run the given operation
+
+**output wrangling**
+translate sql db output to json
 
 **functions to run db queries (& arguments)**
+```
+hero_exists
+    table: heroes
+    input: hero name
+    effect: return boolean (true if hero name exists in heroes table)
 
-<!-- rework to account for all tables affected -->
+get_hero_image
+    table: heroes
+    input: hero name
+    effect: return image url or null
 
-* select
-    * get profile (name)
-        * 
-    * get hero: name, image, about-me 
-* insert
-    * add user (name, about me, biography, abilities)
-* update
-    * change user image (url)
-    * change user name (name)
-    * change user about-me (text)
-    * change user biography (text) 
-* delete
-    * remove user (name)
-        * remove all relationships with this hero
+get_hero_info
+    table: heroes
+    input: hero name
+    effect: return hero name, about_me, biography
 
-* select
-    * get relationship type (currentUser, *)
-* insert
-    * add new relationship (user1, user2, type)
-* update
-    * change relationship type (user1, user2)
-* delete
-    * remove relationship (user1, user2)
+get_hero_relationships
+    tables: heroes, relationship_types, relationships
+    input: hero name
+    effect: return other heroes' names & relationship types (where relationship is defined)
+
+get_hero_abilities
+    tables: heroes, abilities, ability_hero
+    input: hero name
+    effect: return abilities
+
+get_profile
+    subqueries: get_hero_image, get_hero_info, get_hero_relationships, get_hero_abilities
+    input: hero name
+    effect: return output from subqueries
+
+add_hero
+    table: heroes 
+    input: hero name, about_me, biography
+    effect: add new hero to heroes table
+
+get_other_heroes
+    table: heroes
+    input: hero name
+    effect: list of hero names that are not the given hero
+
+get_other_heroes_info
+    subqueries: get_other_heroes, get_hero_image, get_hero_info
+    input: hero name
+    effect: return hero info for heroes other than the given hero
+
+update_hero
+    table: heroes
+    input: field, value
+    effect: the given field with the given value
+
+delete_hero
+    table: heroes
+    input: hero name
+    effect: delete the given hero from the heroes table
+
+hero_has_relationship
+    tables: heroes, relationships
+    input: hero name 1 & hero name 2
+    effect: return boolean (true if hero 1 has defined relationship with hero 2 in relationships table)
+
+add_relationship
+    tables: heroes, relationships
+    input: hero name 1, hero name 2, relationship type id
+    result: add new relationship to the relationships table
+
+update_relationship
+    tables: heroes, relationships
+    input: hero name 1, hero name 2, relationship type id
+    result: update relationship in the relationships table
+
+delete_relationship
+    tables: heroes, relationships
+    input: hero name 1, hero name 2
+    result: delete relationship with the given hero 
