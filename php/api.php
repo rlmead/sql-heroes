@@ -15,21 +15,23 @@ if ($conn->connect_error) {
 
 // define all functions required by app
 
+// convert sql output to json
 function get_json($sql) {
     $result = $GLOBALS['conn']->query($sql);
     $rows = array();
     while ($row = $result->fetch_assoc()) {
         $rows[] = $row;
     }
-    echo json_encode($rows);
+    return json_encode($rows);
 }
 
+// check to see if name exists in heroes table, name column
 function hero_exists()
 {
     $hero_name = json_decode(file_get_contents('php://input'),true)['userName'];
-    // do a query! print the stuff!
-    $sql = 'select count(*) from heroes where name = "' . $hero_name. '";';
-    get_json($sql);
+    // count(*) output will automatically be boolean since name field has unique constraint
+    $sql = 'select count(*) as hero_exists from heroes where name = "' . $hero_name. '";';
+    echo get_json($sql);
 }
 
 // user superglobals to handle requests from the app
