@@ -12,6 +12,7 @@ function Login(props) {
         let response = await props.getData('post', 'hero_exists', { 'userName': userNameExisting });
         if (response.data[0].hero_exists === '1') {
             props.setUserName(userNameExisting);
+            props.setHeroName(userNameExisting);
             props.setView('profile');
         } else {
             alert('no such hero! please check your username, or create a new account.');

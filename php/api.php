@@ -50,7 +50,7 @@ function add_hero()
 // retrieve a hero's image from the heroes table
 function get_hero_image()
 {
-    $hero_name = json_decode(file_get_contents('php://input'), true)['userName'];
+    $hero_name = json_decode(file_get_contents('php://input'), true)['heroName'];
     $sql = 'select image_url from heroes where name = "' . $hero_name . '";';
     echo get_json($sql);
 }

@@ -8,6 +8,7 @@ import Profile from './Profile.js';
 function App() {
   // state: track current userName and current view
   const [userName, setUserName] = useState('');
+  const [heroName, setHeroName] = useState('');
   const [view, setView] = useState('');
 
   async function getData(method, f, data) {
@@ -35,12 +36,13 @@ function App() {
           <>
             <Nav 
               userName={userName}
+              setUserName={setUserName}
               setView={setView}
               getData={getData}
             />
             <Profile
               userName={userName}
-              setUserName={setUserName}
+              heroName={heroName}
               setView={setView}
               getData={getData} />
           </>
@@ -48,6 +50,7 @@ function App() {
       default:
         return (
           <Login
+            setHeroName={setHeroName}
             setUserName={setUserName}
             setView={setView}
             getData={getData} />
