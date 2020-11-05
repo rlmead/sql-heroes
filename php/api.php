@@ -56,14 +56,18 @@ function get_hero_data()
 }
 
 // update a hero's info in the heroes table (any field)
-function update_hero()
+function update_user()
 {
     $hero_info = json_decode(file_get_contents('php://input'), true);
-    $sql = 'update heroes set ' . $hero_info['field'] . ' = "' . $hero_info['value'] . '" where name = "' . $hero_info['userName'] . '"';
-    if ($GLOBALS['conn']->query($sql) === TRUE) {
-        echo "Updated successfully";
+    if ($_GET['u'] == $hero_info['userName']) {
+        $sql = 'update heroes set ' . $hero_info['field'] . ' = "' . $hero_info['value'] . '" where name = "' . $hero_info['userName'] . '"';
+        if ($GLOBALS['conn']->query($sql) === TRUE) {
+            echo "Updated successfully";
+        } else {
+            echo "Error: " . $conn->error;
+        }
     } else {
-        echo "Error: " . $conn->error;
+        echo 'WRONG USER';
     }
 }
 
@@ -71,11 +75,15 @@ function update_hero()
 function delete_user()
 {
     $hero_info = json_decode(file_get_contents('php://input'), true);
-    $sql = 'delete from heroes where name = "' . $hero_info['userName'] . '"';
-    if ($GLOBALS['conn']->query($sql) === TRUE) {
-        echo "Updated successfully";
+    if ($_GET['u'] == $hero_info['userName']) {
+        $sql = 'delete from heroes where name = "' . $hero_info['userName'] . '"';
+        if ($GLOBALS['conn']->query($sql) === TRUE) {
+            echo "Updated successfully";
+        } else {
+            echo "Error: " . $conn->error;
+        }
     } else {
-        echo "Error: " . $conn->error;
+        echo 'WRONG USER';
     }
 }
 
@@ -84,9 +92,6 @@ function delete_user()
 // and whether the current user has the right to run it
 
 if (function_exists($_GET['f'])) {
-    if ($_GET['u'] == '123') {
-        $_GET['f']();
-    } else {
-        echo 'WRONG USER';
-    }
+    // if ($_GET['u'] == '123') {
+    $_GET['f']();
 }

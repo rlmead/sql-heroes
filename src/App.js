@@ -14,7 +14,7 @@ function App() {
   async function getData(method, f, data) {
     return await axios({
       method,
-      url: `http://localhost:8888/php/api.php?f=${f}&u=123`,
+      url: `http://localhost:8888/php/api.php?f=${f}&u=${userName}`,
       data: JSON.stringify(data)
     })
       .then(function (response) {

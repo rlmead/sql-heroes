@@ -39,8 +39,8 @@ function Profile(props) {
     })
 
     // change hero info in the heroes table
-    async function updateHero(field, value) {
-        let response = await props.getData('post', 'update_hero',
+    async function updateUser(field, value) {
+        let response = await props.getData('post', 'update_user',
             {
                 'userName': props.userName,
                 field,
@@ -50,9 +50,9 @@ function Profile(props) {
     }
 
     // change hero image in the heroes table
-    async function updateHeroImage() {
+    async function updateUserImage() {
         var url = prompt('please enter the link to your new image');
-        await updateHero('image_url', url);
+        await updateUser('image_url', url);
         getHeroImage();
     }
 
@@ -62,7 +62,7 @@ function Profile(props) {
                 <img
                     className='img-fluid'
                     src={heroImage || "https://images.unsplash.com/photo-1483879504681-c0196ecceda5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=80"}></img>
-                <Button onClick={() => updateHeroImage()}>change pic!</Button>
+                <Button onClick={() => updateUserImage()}>change pic!</Button>
             </Col>
             <Col sm='9'>
                 <h1>{props.heroName}</h1>
