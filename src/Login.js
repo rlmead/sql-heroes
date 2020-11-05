@@ -8,7 +8,7 @@ function Login(props) {
     const [biography, setBiography] = useState('');
 
     // make sure hero exists in heroes table before logging them in
-    async function heroExistsLogin() {
+    async function heroLogin() {
         let response = await props.getData('post', 'hero_exists', { 'userName': userNameExisting });
         if (response.data[0].hero_exists === '1') {
             props.setUserName(userNameExisting);
@@ -19,23 +19,24 @@ function Login(props) {
         }
     }
 
+    // add a new hero to the heroes table
+    // then log the new user in
+    async function addHero() {
+        let result = await props.getData('post', 'add_hero',
+        { 'userName': userNameNew,
+        aboutMe,
+        biography });
+        props.setUserName(userNameNew);
+        props.setHeroName(userNameNew)
+        props.setView('profile');
+    }
+    
     // make sure hero doesn't exist in heroes table before creating new account
-    async function heroExistsCreate() {
+    async function heroCreate() {
         let response = await props.getData('post', 'hero_exists', { 'userName': userNameNew });
         (response.data[0].hero_exists === '0')
             ? addHero()
             : alert('hero already exists! please choose a different username, or log in.');
-    }
-
-    // add a new hero to the heroes table
-    // then log the new user in
-    async function addHero() {
-        await props.getData('post', 'add_hero',
-        { 'userName': userNameNew,
-            aboutMe,
-            biography });
-        props.setUserName(userNameNew);
-        props.setView('profile');
     }
 
     return (
@@ -46,7 +47,7 @@ function Login(props) {
                     placeholder="existing username"
                     onChange={(e) => setUserNameExisting(e.target.value)}/>
                 <Button
-                    onClick={() => heroExistsLogin()}
+                    onClick={() => heroLogin()}
                     disabled={userNameExisting.length === 0}>
                     log in!
                 </Button>
@@ -66,7 +67,7 @@ function Login(props) {
                     onChange={(e) => setBiography(e.target.value)}/>
 
                 <Button
-                    onClick={() => heroExistsCreate()}
+                    onClick={() => heroCreate()}
                     disabled={userNameNew.length === 0 || aboutMe.length === 0 || biography.length === 0 }>
                     create account!
                 </Button>

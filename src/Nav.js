@@ -4,6 +4,7 @@ function Nav(props) {
     // function to log out current user
     function logOut() {
         props.setUserName('');
+        props.setHeroName('');
         props.setView('login');
     }
 

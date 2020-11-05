@@ -35,6 +35,7 @@ function App() {
         return (
           <>
             <Nav 
+              setHeroName={setHeroName}
               userName={userName}
               setUserName={setUserName}
               setView={setView}

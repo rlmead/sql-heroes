@@ -39,7 +39,7 @@ function hero_exists()
 function add_hero()
 {
     $hero_info = json_decode(file_get_contents('php://input'), true);
-    $sql = "insert into heroes (name, about_me, biography) values ('" . $hero_info['userName'] . "', '" . $hero_info['aboutMe'] . "', '" . $hero_info['biography'] . "')";
+    $sql = 'insert into heroes (name, about_me, biography, image_url) values ("' . $hero_info['userName'] . '", "' . $hero_info['aboutMe'] . '", "' . $hero_info['biography'] . '", null)';
     if ($GLOBALS['conn']->query($sql) === TRUE) {
         echo "New record created successfully";
     } else {
@@ -48,10 +48,10 @@ function add_hero()
 }
 
 // retrieve a hero's image from the heroes table
-function get_hero_image()
+function get_hero_data()
 {
-    $hero_name = json_decode(file_get_contents('php://input'), true)['heroName'];
-    $sql = 'select image_url from heroes where name = "' . $hero_name . '";';
+    $hero_info = json_decode(file_get_contents('php://input'), true);
+    $sql = 'select ' . $hero_info['field'] . ' from heroes where name = "' . $hero_info['heroName'] . '";';
     echo get_json($sql);
 }
 
