@@ -16,7 +16,8 @@ if ($conn->connect_error) {
 // define all functions required by app
 
 // convert sql output to json
-function get_json($sql) {
+function get_json($sql)
+{
     $result = $GLOBALS['conn']->query($sql);
     $rows = array();
     while ($row = $result->fetch_assoc()) {
@@ -28,39 +29,54 @@ function get_json($sql) {
 // check to see if name exists in heroes table, name column
 function hero_exists()
 {
-    $hero_name = json_decode(file_get_contents('php://input'),true)['userName'];
+    $hero_name = json_decode(file_get_contents('php://input'), true)['userName'];
     // count(*) output will automatically be boolean since name field has unique constraint
-    $sql = 'select count(*) as hero_exists from heroes where name = "' . $hero_name. '";';
+    $sql = 'select count(*) as hero_exists from heroes where name = "' . $hero_name . '";';
     echo get_json($sql);
 }
 
 // add a new hero to the heroes table
-function add_hero() {
-    $hero_info = json_decode(file_get_contents('php://input'),true);
-    $sql = "insert into heroes (name, about_me, biography) values ('".$hero_info['userName']."', '".$hero_info['aboutMe']."', '".$hero_info['biography']."')";
+function add_hero()
+{
+    $hero_info = json_decode(file_get_contents('php://input'), true);
+    $sql = "insert into heroes (name, about_me, biography) values ('" . $hero_info['userName'] . "', '" . $hero_info['aboutMe'] . "', '" . $hero_info['biography'] . "')";
     if ($GLOBALS['conn']->query($sql) === TRUE) {
         echo "New record created successfully";
-      } else {
+    } else {
         echo "Error: " . $conn->error;
-      }
+    }
 }
 
 // retrieve a hero's image from the heroes table
-function get_hero_image() {
-    $hero_name = json_decode(file_get_contents('php://input'),true)['userName'];
-    $sql = 'select image_url from heroes where name = "' . $hero_name. '";';
+function get_hero_image()
+{
+    $hero_name = json_decode(file_get_contents('php://input'), true)['userName'];
+    $sql = 'select image_url from heroes where name = "' . $hero_name . '";';
     echo get_json($sql);
 }
 
 // update a hero's info in the heroes table (any field)
-function update_hero() {
-    $hero_info = json_decode(file_get_contents('php://input'),true);
+function update_hero()
+{
+    $hero_info = json_decode(file_get_contents('php://input'), true);
     $sql = 'update heroes set ' . $hero_info['field'] . ' = "' . $hero_info['value'] . '" where name = "' . $hero_info['userName'] . '"';
     if ($GLOBALS['conn']->query($sql) === TRUE) {
         echo "Updated successfully";
-      } else {
+    } else {
         echo "Error: " . $conn->error;
-      }
+    }
+}
+
+// delete a hero from the heroes table
+function delete_user()
+{
+    $hero_info = json_decode(file_get_contents('php://input'), true);
+    $sql = 'delete from heroes where name = "' . $hero_info['userName'] . '"';
+    if ($GLOBALS['conn']->query($sql) === TRUE) {
+        echo "Updated successfully";
+    } else {
+        echo "Error: " . $conn->error;
+    }
 }
 
 // use superglobals to handle requests from the app
@@ -68,7 +84,7 @@ function update_hero() {
 // and whether the current user has the right to run it
 
 if (function_exists($_GET['f'])) {
-    if($_GET['u'] == '123') {
+    if ($_GET['u'] == '123') {
         $_GET['f']();
     } else {
         echo 'WRONG USER';

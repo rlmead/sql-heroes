@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { Container } from 'reactstrap';
+import Nav from './Nav.js';
 import Login from './Login.js';
 import Profile from './Profile.js';
 
@@ -31,18 +32,25 @@ function App() {
     switch (view) {
       case 'profile':
         return (
-          <Profile
-            userName={userName}
-            setUserName={setUserName}
-            setView={setView}
-            getData={getData}/>
+          <>
+            <Nav 
+              userName={userName}
+              setView={setView}
+              getData={getData}
+            />
+            <Profile
+              userName={userName}
+              setUserName={setUserName}
+              setView={setView}
+              getData={getData} />
+          </>
         )
       default:
         return (
           <Login
             setUserName={setUserName}
             setView={setView}
-            getData={getData}/>
+            getData={getData} />
         )
     }
   };
