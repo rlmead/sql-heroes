@@ -5,8 +5,8 @@ import Login from './Login.js';
 import Profile from './Profile.js';
 
 function App() {
-  // state: track current user and current view
-  const [user, setUser] = useState('');
+  // state: track current userName and current view
+  const [userName, setUserName] = useState('');
   const [view, setView] = useState('');
 
   async function getData(method, f, data) {
@@ -27,15 +27,21 @@ function App() {
 
   // function with switch statement to determine what component to render
   // according to the current view
-  const switchView = (view) => {
+  function switchView(view) {
     switch (view) {
       case 'profile':
         return (
-          <Profile setView={setView} />
+          <Profile
+            userName={userName}
+            setUserName={setUserName}
+            setView={setView}/>
         )
       default:
         return (
-          <Login setView={setView} getData={getData}/>
+          <Login
+            setUserName={setUserName}
+            setView={setView}
+            getData={getData}/>
         )
     }
   };

@@ -43,12 +43,9 @@ function add_hero() {
       } else {
         echo "Error: " . $conn->error;
       }
-    // echo ($sql);
-    // echo get_json($sql);
-    // echo $hero_info['userName'].' '.$hero_info['aboutMe'].' '.$hero_info['biography'];
 }
 
-// user superglobals to handle requests from the app
+// use superglobals to handle requests from the app
 // determine which function to run,
 // and whether the current user has the right to run it
 

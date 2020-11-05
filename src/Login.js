@@ -10,9 +10,12 @@ function Login(props) {
     // make sure hero exists in heroes table before logging them in
     async function heroExistsLogin() {
         let response = await props.getData('post', 'hero_exists', { 'userName': userNameExisting });
-        (response.data[0].hero_exists === '1')
-            ? props.setView('profile')
-            : alert('no such hero! please check your username or create a new account.');
+        if (response.data[0].hero_exists === '1') {
+            props.setUserName(userNameExisting);
+            props.setView('profile');
+        } else {
+            alert('no such hero! please check your username, or create a new account.');
+        }
     }
 
     // make sure hero doesn't exist in heroes table before creating new account
@@ -20,16 +23,18 @@ function Login(props) {
         let response = await props.getData('post', 'hero_exists', { 'userName': userNameNew });
         (response.data[0].hero_exists === '0')
             ? addHero()
-            : alert('hero already exists! please choose a different username or log in.');
+            : alert('hero already exists! please choose a different username, or log in.');
     }
 
-    // add a new hero to the 
+    // add a new hero to the heroes table
+    // then log the new user in
     async function addHero() {
         let response = await props.getData('post', 'add_hero',
         { 'userName': userNameNew,
             aboutMe,
             biography });
-        console.log(response);
+        props.setUserName(userNameNew);
+        props.setView('profile');
     }
 
     return (
