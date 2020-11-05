@@ -34,6 +34,20 @@ function hero_exists()
     echo get_json($sql);
 }
 
+// add a new hero to the heroes table
+function add_hero() {
+    $hero_info = json_decode(file_get_contents('php://input'),true);
+    $sql = "insert into heroes (name, about_me, biography) values ('".$hero_info['userName']."', '".$hero_info['aboutMe']."', '".$hero_info['biography']."')";
+    if ($GLOBALS['conn']->query($sql) === TRUE) {
+        echo "New record created successfully";
+      } else {
+        echo "Error: " . $conn->error;
+      }
+    // echo ($sql);
+    // echo get_json($sql);
+    // echo $hero_info['userName'].' '.$hero_info['aboutMe'].' '.$hero_info['biography'];
+}
+
 // user superglobals to handle requests from the app
 // determine which function to run,
 // and whether the current user has the right to run it
