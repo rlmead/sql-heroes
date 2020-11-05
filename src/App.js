@@ -16,7 +16,7 @@ function App() {
       data: JSON.stringify(data)
     })
       .then(function (response) {
-        console.log(response);
+        return response;
       })
       .catch(function (error) {
         // handle error
