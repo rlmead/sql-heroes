@@ -21,22 +21,15 @@ function get_json($sql) {
     while ($row = $result->fetch_assoc()) {
         $rows[] = $row;
     }
-    return json_encode($rows);
+    echo json_encode($rows);
 }
 
 function hero_exists()
 {
-    $obj = file_get_contents('php://input');
-    echo $obj;
+    $hero_name = json_decode(file_get_contents('php://input'),true)['userName'];
     // do a query! print the stuff!
-    // $sql = "select count(1)::bit as bool from heroes where name = $hero_name"
-    // $sql = "SELECT * FROM heroes";
-    // $result = $GLOBALS['conn']->query($sql);
-    // $rows = array();
-    // while ($row = $result->fetch_assoc()) {
-    //     $rows[] = $row;
-    // }
-    // echo json_encode($rows);
+    $sql = 'select count(*) from heroes where name = "' . $hero_name. '";';
+    get_json($sql);
 }
 
 // user superglobals to handle requests from the app
