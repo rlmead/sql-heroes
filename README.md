@@ -157,9 +157,9 @@ update_hero
     effect: the given field with the given value
 
 delete_hero
-    table: heroes
+    tables: heroes, ability_hero, relationships
     input: hero name
-    effect: delete the given hero from the heroes table
+    effect: delete the given hero from all the tables they might be in
 
 hero_has_relationship
     tables: heroes, relationships

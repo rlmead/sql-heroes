@@ -29,7 +29,7 @@ function Login(props) {
     // add a new hero to the heroes table
     // then log the new user in
     async function addHero() {
-        let response = await props.getData('post', 'add_hero',
+        await props.getData('post', 'add_hero',
         { 'userName': userNameNew,
             aboutMe,
             biography });

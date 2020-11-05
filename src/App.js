@@ -34,7 +34,8 @@ function App() {
           <Profile
             userName={userName}
             setUserName={setUserName}
-            setView={setView}/>
+            setView={setView}
+            getData={getData}/>
         )
       default:
         return (

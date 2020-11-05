@@ -45,6 +45,24 @@ function add_hero() {
       }
 }
 
+// retrieve a hero's image from the heroes table
+function get_hero_image() {
+    $hero_name = json_decode(file_get_contents('php://input'),true)['userName'];
+    $sql = 'select image_url from heroes where name = "' . $hero_name. '";';
+    echo get_json($sql);
+}
+
+// update a hero's info in the heroes table (any field)
+function update_hero() {
+    $hero_info = json_decode(file_get_contents('php://input'),true);
+    $sql = 'update heroes set ' . $hero_info['field'] . ' = "' . $hero_info['value'] . '" where name = "' . $hero_info['userName'] . '"';
+    if ($GLOBALS['conn']->query($sql) === TRUE) {
+        echo "Updated successfully";
+      } else {
+        echo "Error: " . $conn->error;
+      }
+}
+
 // use superglobals to handle requests from the app
 // determine which function to run,
 // and whether the current user has the right to run it
