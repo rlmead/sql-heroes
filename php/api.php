@@ -60,13 +60,18 @@ function get_hero_data()
 function get_all_heroes()
 {
     $user_name = json_decode(file_get_contents('php://input'), true)['userName'];
-    $sql = '
-    select heroes.name, heroes.image_url, relationships.type_id
+    $sql =
+    'select heroes.name, heroes.image_url, relationships_filtered.type_id
     from heroes
-    left outer join relationships on heroes.id = relationships.hero2_id
+    left outer join
+    (select hero2_id, type_id
+    from relationships
     where relationships.hero1_id in
-    (select id from heroes where name = "' . $user_name . '")
-    and not heroes.name = "' . $user_name . '" order by relationships.type_id;';
+    (select id from heroes where name = "' . $user_name . '"))
+    as relationships_filtered
+    on heroes.id = relationships_filtered.hero2_id
+    where not heroes.name = "' . $user_name . '"
+    order by relationships_filtered.type_id desc;';
     echo get_json($sql);
 
 }
