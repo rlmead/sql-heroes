@@ -1,6 +1,7 @@
-# SQL Heroes Pseudocode
-Project for Awesome Inc Web Development Bootcamp Week 7
+# SQL Heroes
+There is currently no live deployment of this project. It was developed locally using MAMP to run PHP and MySQL on the back end, and React on the front end. The MySQL database was initially populated with the file sql/superheroes.sql.
 
+# Pseudocode
 ## React
 **model**
 
