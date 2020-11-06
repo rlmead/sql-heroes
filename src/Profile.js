@@ -62,10 +62,13 @@ function Profile(props) {
                 <img
                     className='img-fluid'
                     src={heroImage || "https://images.unsplash.com/photo-1483879504681-c0196ecceda5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=80"}></img>
-                <Button onClick={() => updateUserImage()}>change pic!</Button>
+                {
+                    props.heroName === props.userName &&
+                    <Button onClick={() => updateUserImage()}>change pic!</Button>
+                }
             </Col>
             <Col sm='9'>
-                <h1>{props.heroName}</h1>
+                <h1>{props.heroName === props.userName ? 'my profile' : props.heroName}</h1>
                 <h3>about me</h3>
                 <p>{heroAboutMe}</p>
                 <h3>bio</h3>

@@ -1,6 +1,12 @@
 import { Navbar, Row, Col, Button } from 'reactstrap';
 
 function Nav(props) {
+    // function to view current user's profile
+    function viewMyProfile() {
+        props.setHeroName(props.userName);
+        props.setView('profile');
+    }
+    
     // function to log out current user
     function logOut() {
         props.setUserName('');
@@ -17,16 +23,16 @@ function Nav(props) {
 
     return (
         <Navbar
-            fixed
+            fixed='true'
         >
             <Row>
                 <Col xs='3'>
-                    <Button>
-                        my account
+                    <Button onClick={() => viewMyProfile()}>
+                        view my profile
                     </Button>
                 </Col>
                 <Col xs='3'>
-                    <Button>
+                    <Button onClick={() => props.setView('allHeroes')}>
                         all heroes
                     </Button>
                 </Col>
@@ -38,7 +44,7 @@ function Nav(props) {
                 <Col xs='3'>
                     <Button
                         onClick={() => deleteUser()}>
-                        delete account
+                        delete my account
                     </Button>
                 </Col>
             </Row>

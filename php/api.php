@@ -55,12 +55,22 @@ function get_hero_data()
     echo get_json($sql);
 }
 
+// get basic data about all heroes other than the current user
+function get_all_heroes()
+{
+    $user_name = json_decode(file_get_contents('php://input'), true)['userName'];
+    // fill this in and then call it from the AllHeroes page
+    $sql = 'select name, about_me, biography, image_url from heroes where not name = "' . $user_name . '";';
+    echo get_json($sql);
+
+}
+
 // update a hero's info in the heroes table (any field)
 function update_user()
 {
-    $hero_info = json_decode(file_get_contents('php://input'), true);
-    if ($_GET['u'] == $hero_info['userName']) {
-        $sql = 'update heroes set ' . $hero_info['field'] . ' = "' . $hero_info['value'] . '" where name = "' . $hero_info['userName'] . '"';
+    $user_info = json_decode(file_get_contents('php://input'), true);
+    if ($_GET['u'] == $user_info['userName']) {
+        $sql = 'update heroes set ' . $user_info['field'] . ' = "' . $user_info['value'] . '" where name = "' . $user_info['userName'] . '"';
         if ($GLOBALS['conn']->query($sql) === TRUE) {
             echo "Updated successfully";
         } else {
@@ -74,9 +84,9 @@ function update_user()
 // delete a hero from the heroes table
 function delete_user()
 {
-    $hero_info = json_decode(file_get_contents('php://input'), true);
-    if ($_GET['u'] == $hero_info['userName']) {
-        $sql = 'delete from heroes where name = "' . $hero_info['userName'] . '"';
+    $user_info = json_decode(file_get_contents('php://input'), true);
+    if ($_GET['u'] == $user_info['userName']) {
+        $sql = 'delete from heroes where name = "' . $user_info['userName'] . '"';
         if ($GLOBALS['conn']->query($sql) === TRUE) {
             echo "Updated successfully";
         } else {

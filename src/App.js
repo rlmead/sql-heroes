@@ -2,8 +2,9 @@ import { useState } from 'react';
 import axios from 'axios';
 import { Container } from 'reactstrap';
 import Nav from './Nav.js';
-import Login from './Login.js';
 import Profile from './Profile.js';
+import AllHeroes from './AllHeroes.js';
+import Login from './Login.js';
 
 function App() {
   // state: track current userName and current view
@@ -33,20 +34,19 @@ function App() {
     switch (view) {
       case 'profile':
         return (
-          <>
-            <Nav 
-              setHeroName={setHeroName}
-              userName={userName}
-              setUserName={setUserName}
-              setView={setView}
-              getData={getData}
-            />
-            <Profile
-              userName={userName}
-              heroName={heroName}
-              setView={setView}
-              getData={getData} />
-          </>
+          <Profile
+            userName={userName}
+            heroName={heroName}
+            setView={setView}
+            getData={getData} />
+        )
+      case 'allHeroes':
+        return (
+          <AllHeroes
+            userName={userName}
+            setHeroName={setHeroName}
+            setView={setView}
+            getData={getData} />
         )
       default:
         return (
@@ -62,6 +62,17 @@ function App() {
   return (
     <div className="App">
       <Container>
+      {/* show the navbar on every page but login */}
+        { view !== 'login' &&
+          <Nav
+            setHeroName={setHeroName}
+            userName={userName}
+            setUserName={setUserName}
+            setView={setView}
+            getData={getData}
+          />
+        }
+        {/* switch page according to view state */}
         {switchView(view)}
       </Container>
     </div>
