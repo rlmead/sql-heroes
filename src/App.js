@@ -10,7 +10,7 @@ function App() {
   // state: track current userName and current view
   const [userName, setUserName] = useState('');
   const [heroName, setHeroName] = useState('');
-  const [view, setView] = useState('');
+  const [view, setView] = useState('login');
 
   async function getData(method, f, data) {
     return await axios({
@@ -63,15 +63,15 @@ function App() {
     <div className="App">
       <Container>
       {/* show the navbar on every page but login */}
-        { view !== 'login' &&
-          <Nav
-            setHeroName={setHeroName}
-            userName={userName}
-            setUserName={setUserName}
-            setView={setView}
-            getData={getData}
-          />
-        }
+      { view !== 'login' &&
+        <Nav
+          setHeroName={setHeroName}
+          userName={userName}
+          setUserName={setUserName}
+          setView={setView}
+          getData={getData}
+        />
+      }
         {/* switch page according to view state */}
         {switchView(view)}
       </Container>

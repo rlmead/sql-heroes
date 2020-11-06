@@ -14,37 +14,23 @@ function Nav(props) {
         props.setView('login');
     }
 
-    // function to delete user's account
-    // and go back to login page
-    async function deleteUser() {
-        await props.getData('post', 'delete_user', { 'userName': props.userName });
-        props.setView('login');
-    }
-
     return (
         <Navbar
-            fixed='true'
-        >
+            fixed='true'>
             <Row>
-                <Col xs='3'>
+                <Col xs='4'>
                     <Button onClick={() => viewMyProfile()}>
-                        view my profile
+                        my profile
                     </Button>
                 </Col>
-                <Col xs='3'>
+                <Col xs='4'>
                     <Button onClick={() => props.setView('allHeroes')}>
                         all heroes
                     </Button>
                 </Col>
-                <Col xs='3'>
+                <Col xs='4'>
                     <Button onClick={() => logOut()}>
                         log out
-                    </Button>
-                </Col>
-                <Col xs='3'>
-                    <Button
-                        onClick={() => deleteUser()}>
-                        delete my account
                     </Button>
                 </Col>
             </Row>

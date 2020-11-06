@@ -9,24 +9,30 @@ function Profile(props) {
     // get hero image from database
     async function getHeroImage() {
         let response = await props.getData('post', 'get_hero_data',
-        { 'heroName': props.heroName,
-            'field': 'image_url' });
+            {
+                'heroName': props.heroName,
+                'field': 'image_url'
+            });
         setHeroImage(response.data[0]['image_url']);
     }
 
     // get hero about_me from heroes table
     async function getHeroAboutMe() {
         let response = await props.getData('post', 'get_hero_data',
-        { 'heroName': props.heroName,
-            'field': 'about_me' });
+            {
+                'heroName': props.heroName,
+                'field': 'about_me'
+            });
         setHeroAboutMe(response.data[0]['about_me']);
     }
-    
+
     // get hero bio from heroes table
     async function getHeroBio() {
         let response = await props.getData('post', 'get_hero_data',
-        { 'heroName': props.heroName,
-            'field': 'biography' });
+            {
+                'heroName': props.heroName,
+                'field': 'biography'
+            });
         setHeroBio(response.data[0]['biography']);
     }
 
@@ -49,11 +55,18 @@ function Profile(props) {
         console.log(response);
     }
 
-    // change hero image in the heroes table
+    // function to change user's image in the heroes table
     async function updateUserImage() {
         var url = prompt('please enter the link to your new image');
         await updateUser('image_url', url);
         getHeroImage();
+    }
+
+    // function to delete user's account
+    // and go back to login page
+    async function deleteUser() {
+        await props.getData('post', 'delete_user', { 'userName': props.userName });
+        props.setView('login');
     }
 
     return (
@@ -64,7 +77,7 @@ function Profile(props) {
                     src={heroImage || "https://images.unsplash.com/photo-1483879504681-c0196ecceda5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=80"}></img>
                 {
                     props.heroName === props.userName &&
-                    <Button onClick={() => updateUserImage()}>change pic!</Button>
+                    <Button onClick={() => updateUserImage()} className='mt-3'>change pic!</Button>
                 }
             </Col>
             <Col sm='9'>
@@ -73,6 +86,13 @@ function Profile(props) {
                 <p>{heroAboutMe}</p>
                 <h3>bio</h3>
                 <p>{heroBio}</p>
+                {
+                    props.heroName === props.userName &&
+                    <Button
+                        onClick={() => deleteUser()}>
+                        delete my account
+                    </Button>
+                }
             </Col>
         </Row>
     )
