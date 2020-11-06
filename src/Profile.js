@@ -53,6 +53,40 @@ function Profile(props) {
         : setHeroRelationship(null);
     }
 
+    // update relationship between user and hero (only accessible when the two differ, and their relationship is defined)
+    async function updateRelationship(relationshipType) {
+        let response = await props.getData('post', 'update_relationship',
+            {
+                'userName': props.userName,
+                'hero1': props.userName,
+                'hero2': props.heroName,
+                relationshipType
+            });
+        console.log(response);
+    }
+
+    // add relationship between user and hero (only accessible when the two differ, and their relationship is not defined)
+    async function addRelationship(relationshipType) {
+        let response = await props.getData('post', 'add_relationship',
+            {
+                'userName': props.userName,
+                'hero1': props.userName,
+                'hero2': props.heroName,
+                relationshipType
+            });
+        console.log(response);
+    }
+
+    async function deleteRelationship() {
+        let response = await props.getData('post', 'delete_relationship',
+            {
+                'userName': props.userName,
+                'hero1': props.userName,
+                'hero2': props.heroName
+            });
+        console.log(response);
+    }
+
     // check the db and update the page whenever there's a change
     useEffect(() => {
         getHeroImage();
@@ -117,15 +151,31 @@ function Profile(props) {
                         <Row className='text-center'>
                             <Col
                                 xs='4'>
-                                <Button className={heroRelationship === '2' && 'btn-danger'}>enemy</Button>
+                                <Button
+                                className={heroRelationship === '2' && 'btn-danger'}
+                                onClick={heroRelationship
+                                    ? () => updateRelationship('2') 
+                                    : () => addRelationship('1')}>
+                                    enemy
+                                </Button>
                             </Col>
                             <Col
                                 xs='4'>
-                                <Button className={heroRelationship === '1' && 'btn-danger'}>friend</Button>
+                                <Button
+                                className={heroRelationship === '1' && 'btn-danger'}
+                                onClick={heroRelationship
+                                ? () => updateRelationship('1')
+                                : () => addRelationship('1')}>
+                                    friend
+                                </Button>
                             </Col>
                             <Col
                                 xs='4'>
-                                <Button className={!heroRelationship && 'btn-danger'}>unknown</Button>
+                                <Button
+                                className={!heroRelationship && 'btn-danger'}
+                                onClick={() => deleteRelationship()}>
+                                    unknown
+                                </Button>
                             </Col>
                         </Row>
                     </>

@@ -70,6 +70,70 @@ function get_relationship()
     echo get_json($sql);
 }
 
+// update an existing relationship between two heroes
+function update_relationship()
+{
+    $hero_info = json_decode(file_get_contents('php://input'), true);
+    if ($_GET['u'] == $hero_info['userName']) {
+        $sql =
+            'update relationships
+            set type_id = ' . $hero_info['relationshipType'] . '
+            where hero1_id in
+                (select id from heroes where name = "' . $hero_info['hero1'] . '")
+            and hero2_id in
+                (select id from heroes where name = "' . $hero_info['hero2'] . '");';
+        if ($GLOBALS['conn']->query($sql) === TRUE) {
+            echo "Updated successfully";
+        } else {
+            echo "Error: " . $conn->error;
+        }
+    } else {
+        echo 'WRONG USER';
+    }
+}
+
+// add a new relationship for heroes that don't have a defined relationship yet
+function add_relationship()
+{
+    $hero_info = json_decode(file_get_contents('php://input'), true);
+    if ($_GET['u'] == $hero_info['userName'])
+    {
+        $sql = 'insert into relationships (hero1_id, hero2_id, type_id)
+        values (
+            (select id from heroes where name = "' . $hero_info['hero1'] . '"),
+            (select id from heroes where name = "' . $hero_info['hero2'] . '"),
+            ' . $hero_info['relationshipType'] . ')';
+        if ($GLOBALS['conn']->query($sql) === TRUE) {
+            echo "New record created successfully";
+        } else {
+            echo "Error: " . $conn->error;
+        }
+    } else {
+        echo 'WRONG USER';
+    }
+}
+
+// add a new relationship for heroes that don't have a defined relationship yet
+function delete_relationship()
+{
+    $hero_info = json_decode(file_get_contents('php://input'), true);
+    if ($_GET['u'] == $hero_info['userName'])
+    {
+        $sql = 'delete from relationships where hero1_id =
+        (select id from heroes where name = "' . $hero_info['hero1'] . '")
+        and hero2_id =
+        (select id from heroes where name = "' . $hero_info['hero2'] . '")';
+        if ($GLOBALS['conn']->query($sql) === TRUE) {
+            echo "New record created successfully";
+        } else {
+            echo "Error: " . $conn->error;
+        }
+    } else {
+        echo 'WRONG USER';
+    }
+}
+
+
 // get basic data about all heroes other than the current user
 // including relationships
 function get_all_heroes()
