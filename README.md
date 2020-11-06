@@ -21,7 +21,7 @@ input: db function, get/post, data/arguments
 
 **view**<br>
 components:
-* LOGIN/CREAT ACCOUNT (default)
+* LOGIN/CREATE ACCOUNT (default)
     * input: username
     * button: log in
     * button: create account
