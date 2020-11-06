@@ -40,7 +40,7 @@ function AllHeroes(props) {
                                 <h3>{item.name}</h3>
                                 {
                                     item.type_id &&
-                                    <h4>{item.type_id === '1' ? 'friend' : 'enemy'}</h4>
+                                    <h4>{'my ' + (item.type_id === '1' ? 'friend' : 'enemy')}</h4>
                                 }
                             </Col>
                         </Row>

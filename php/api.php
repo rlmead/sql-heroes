@@ -55,25 +55,39 @@ function get_hero_data()
     echo get_json($sql);
 }
 
+// find the relationship between two heroes
+function get_relationship()
+{
+    $hero_info = json_decode(file_get_contents('php://input'), true);
+    $sql =
+        'select type_id from relationships
+        where hero1_id in
+        (select id from heroes
+        where name = "' . $hero_info['hero1'] . '")
+        and hero2_id in
+        (select id from heroes
+        where name = "' . $hero_info['hero2'] . '");';
+    echo get_json($sql);
+}
+
 // get basic data about all heroes other than the current user
 // including relationships
 function get_all_heroes()
 {
     $user_name = json_decode(file_get_contents('php://input'), true)['userName'];
     $sql =
-    'select heroes.name, heroes.image_url, relationships_filtered.type_id
-    from heroes
-    left outer join
-    (select hero2_id, type_id
-    from relationships
-    where relationships.hero1_id in
-    (select id from heroes where name = "' . $user_name . '"))
-    as relationships_filtered
-    on heroes.id = relationships_filtered.hero2_id
-    where not heroes.name = "' . $user_name . '"
-    order by relationships_filtered.type_id desc;';
+        'select heroes.name, heroes.image_url, relationships_filtered.type_id
+        from heroes
+        left outer join
+        (select hero2_id, type_id
+        from relationships
+        where relationships.hero1_id in
+        (select id from heroes where name = "' . $user_name . '"))
+        as relationships_filtered
+        on heroes.id = relationships_filtered.hero2_id
+        where not heroes.name = "' . $user_name . '"
+        order by relationships_filtered.type_id desc;';
     echo get_json($sql);
-
 }
 
 // update a hero's info in the heroes table (any field)
