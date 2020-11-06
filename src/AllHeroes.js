@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Row, Col, Button } from 'reactstrap';
+import { Row, Col } from 'reactstrap';
 
 function AllHeroes(props) {
     const [allHeroData, setAllHeroData] = useState([]);
@@ -38,6 +38,7 @@ function AllHeroes(props) {
                             </Col>
                             <Col xs='8'>
                                 <h3>{item.name}</h3>
+                                <h4>{item.type_id === '1' ? 'friend' : 'enemy'}</h4>
                             </Col>
                         </Row>
                     )

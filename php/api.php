@@ -56,11 +56,17 @@ function get_hero_data()
 }
 
 // get basic data about all heroes other than the current user
+// including relationships
 function get_all_heroes()
 {
     $user_name = json_decode(file_get_contents('php://input'), true)['userName'];
-    // fill this in and then call it from the AllHeroes page
-    $sql = 'select name, about_me, biography, image_url from heroes where not name = "' . $user_name . '";';
+    $sql = '
+    select heroes.name, heroes.image_url, relationships.type_id
+    from heroes
+    left outer join relationships on heroes.id = relationships.hero2_id
+    where relationships.hero1_id in
+    (select id from heroes where name = "' . $user_name . '")
+    and not heroes.name = "' . $user_name . '" order by relationships.type_id;';
     echo get_json($sql);
 
 }

@@ -77,7 +77,7 @@ function Profile(props) {
                     src={heroImage || "https://images.unsplash.com/photo-1483879504681-c0196ecceda5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=80"}></img>
                 {
                     props.heroName === props.userName &&
-                    <Button onClick={() => updateUserImage()} className='mt-3'>change pic!</Button>
+                    <Button onClick={() => updateUserImage()} className='mt-3'>change pic</Button>
                 }
             </Col>
             <Col sm='9'>
