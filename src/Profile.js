@@ -155,7 +155,7 @@ function Profile(props) {
                                 className={heroRelationship === '2' && 'btn-danger'}
                                 onClick={heroRelationship
                                     ? () => updateRelationship('2') 
-                                    : () => addRelationship('1')}>
+                                    : () => addRelationship('2')}>
                                     enemy
                                 </Button>
                             </Col>

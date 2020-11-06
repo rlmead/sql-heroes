@@ -174,7 +174,19 @@ function update_user()
 function delete_user()
 {
     $user_info = json_decode(file_get_contents('php://input'), true);
+    // make sure that the current user is the user whose account is being deleted
     if ($_GET['u'] == $user_info['userName']) {
+        // first, delete matching records from the relationships table
+        $sql = 'delete from relationships where hero1_id = 
+            (select id from heroes where name = "' . $user_info['userName'] . '")
+            or hero2_id =
+            (select id from heroes where name = "' . $user_info['userName'] . '")';
+        if ($GLOBALS['conn']->query($sql) === TRUE) {
+            echo "Updated successfully";
+        } else {
+            echo "Error: " . $conn->error;
+        }
+        // finally, delete from the heroes table
         $sql = 'delete from heroes where name = "' . $user_info['userName'] . '"';
         if ($GLOBALS['conn']->query($sql) === TRUE) {
             echo "Updated successfully";
