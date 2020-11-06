@@ -62,7 +62,6 @@ function Profile(props) {
                 'hero2': props.heroName,
                 relationshipType
             });
-        console.log(response);
     }
 
     // add relationship between user and hero (only accessible when the two differ, and their relationship is not defined)
@@ -74,7 +73,6 @@ function Profile(props) {
                 'hero2': props.heroName,
                 relationshipType
             });
-        console.log(response);
     }
 
     async function deleteRelationship() {
@@ -84,7 +82,6 @@ function Profile(props) {
                 'hero1': props.userName,
                 'hero2': props.heroName
             });
-        console.log(response);
     }
 
     // check the db and update the page whenever there's a change
@@ -103,7 +100,6 @@ function Profile(props) {
                 field,
                 value
             });
-        console.log(response);
     }
 
     // function to change user's image in the heroes table
